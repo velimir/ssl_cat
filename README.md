@@ -105,6 +105,7 @@ Issue is reproducable when:
 * Application is run on erlang 19
 * `scat_ssl_reader` uses ssl under the hood (`gen_tcp` works fine)
 * `scat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducabel.
+
     ```erlang
         proxy_request(FSocket, BSocket) ->
             %% -------------------vvvvvvvvvvvvvvv
