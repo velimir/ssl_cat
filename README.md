@@ -1,4 +1,4 @@
-# ssl_cat (ssl cat) #
+# SSL cat #
 
 Small application which was built to reproduce issue with ssl sockets, when messages are received one by one using `[{active, once}]` method.
 
@@ -10,13 +10,13 @@ Small application which was built to reproduce issue with ssl sockets, when mess
 
 ## Steps to reproduce ##
 
-Application starts 2 listners on ports 8443 (`gen_tcp`) and 9443 (`ssl`). Both of them has the same protocol, which will be described later. The only difference is 8443 proxies requests to 9443 and back to requestor.
+Application starts 2 listeners on ports 8443 (`gen_tcp`) and 9443 (`ssl`). Both of them has the same protocol, which will be described later. The only difference is 8443 proxies requests to 9443 and back to requester.
 
-Listeners receive file names, which are read from `priv` directory and sent back to requestor.
+Listeners receive file names, which are read from `priv` directory and sent back to requester.
 
 ### Working example ###
 
-Application works fine before erlang 19.0, hence if you need to see that it works as it's supposed to work, you need to use erlang version befor 19.0, (let's say 18.3, on which it was tested).
+Application works fine before Erlang 19.0, hence if you need to see that it works as it's supposed to work, you need to use Erlang version before 19.0, (let's say 18.3, on which it was tested).
 
 Run `ssl_cat` in one of terminals, as it's said above. Service will produce some traces, that it's started:
 
@@ -77,7 +77,7 @@ You can check, that `out.json` (output from telnet) contains the whole content f
 
 ### Erlang 19 issue ###
 
-Try to do the same steps, but use erlang 19.(0|1|2).
+Try to do the same steps, but use Erlang 19.(0|1|2).
 Ask for `small.json` file once again, you'll see something like that in the output:
 
 ```
@@ -96,15 +96,15 @@ Ask for `small.json` file once again, you'll see something like that in the outp
     14:23:43.880 [info] backend closed connection: ssl_closed
 ```
 
-Notice, that `total` size is smaller, than `small.json` file. You can verify, that `out.json` now has a cat version of `small.json` file.
-Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (packet) from socket even though according to tcp trace and erlang trace the whole file was successfully transferred from `9443` to requestor (`scat_listner`).
+Notice, that `total` size is smaller, than `small.json` file. You can verify, that `out.json` now has a cut version of `small.json` file.
+Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (packet) from socket even though according to tcp trace and Erlang trace the whole file was successfully transferred from `9443` to requester (`scat_listner`).
 
 ## Notes ##
 
-Issue is reproducable when:
-* Application is run on erlang 19
+Issue is reproducible when:
+* Application is run on Erlang 19
 * `ssl_cat_ssl_reader` uses ssl under the hood (`gen_tcp` works fine)
-* `ssl_cat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducabel.
+* `ssl_cat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducible.
 
     ```erlang
         proxy_request(FSocket, BSocket) ->
