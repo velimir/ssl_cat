@@ -1,0 +1,21 @@
+{application, scat,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { scat_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    inets,
+    crypto,
+    public_key,
+    ssl,
+    lager
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, []},
+  {links, []}
+ ]}.
