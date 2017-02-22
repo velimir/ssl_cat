@@ -6,7 +6,7 @@
 %%% @end
 %%% Created : 22 Feb 2017 by Grigory Starinkin <gstarinkin@alertlogic.com>
 %%%-------------------------------------------------------------------
--module(scat_ssl_reader).
+-module(ssl_cat_ssl_reader).
 
 %% API
 -export([start_link/0, init/0]).
@@ -29,8 +29,8 @@ start_link() ->
 %%%===================================================================
 init() ->
     Port = 9443,
-    CertFile = filename:join(code:priv_dir(scat), "server.crt"),
-    KeyFile = filename:join(code:priv_dir(scat), "server.key"),
+    CertFile = filename:join(code:priv_dir(ssl_cat), "server.crt"),
+    KeyFile = filename:join(code:priv_dir(ssl_cat), "server.key"),
     ListenOpts = [binary,
                   {active, false},
                   {backlog, 1024}, 
@@ -65,7 +65,7 @@ trim(Bin) ->
     re:replace(Bin, "^\\s+|\\s+$", "", [{return, binary}, global]).
 
 read_file(FileName) ->
-    PrivDir = code:priv_dir(scat),
+    PrivDir = code:priv_dir(ssl_cat),
     FFName = filename:join(PrivDir, FileName),
     lager:info("reading file: ~p", [FFName]),
     file:read_file(FFName).

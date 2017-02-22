@@ -1,9 +1,9 @@
 %%%-------------------------------------------------------------------
-%% @doc scat top level supervisor.
+%% @doc ssl_cat top level supervisor.
 %% @end
 %%%-------------------------------------------------------------------
 
--module(scat_sup).
+-module(ssl_cat_sup).
 
 -behaviour(supervisor).
 
@@ -29,10 +29,10 @@ start_link() ->
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
     ChildrenSpec = [
-                    {scat_ssl_reader, {scat_ssl_reader, start_link, []},
-                     permanent, 1000, worker, [scat_ssl_reader_srv]},
-                    {scat_listner, {scat_listner, start_link, []},
-                     permanent, 1000, worker, [scat_listner]}
+                    {ssl_cat_ssl_reader, {ssl_cat_ssl_reader, start_link, []},
+                     permanent, 1000, worker, [ssl_cat_ssl_reader_srv]},
+                    {ssl_cat_listner, {ssl_cat_listner, start_link, []},
+                     permanent, 1000, worker, [ssl_cat_listner]}
                    ],
     {ok, {{one_for_one, 5, 10}, ChildrenSpec}}.
 

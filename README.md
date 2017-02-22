@@ -1,4 +1,4 @@
-# scat (ssl cat) #
+# ssl_cat (ssl cat) #
 
 Small application which was built to reproduce issue with ssl sockets, when messages are received one by one using `[{active, once}]` method.
 
@@ -6,7 +6,7 @@ Small application which was built to reproduce issue with ssl sockets, when mess
 
     $ rebar3 get-deps
     $ rebar3 compile
-    $ rebar3 shell --apps scat
+    $ rebar3 shell --apps ssl_cat
 
 ## Steps to reproduce ##
 
@@ -18,12 +18,12 @@ Listeners receive file names, which are read from `priv` directory and sent back
 
 Application works fine before erlang 19.0, hence if you need to see that it works as it's supposed to work, you need to use erlang version befor 19.0, (let's say 18.3, on which it was tested).
 
-Run `scat` in one of terminals, as it's said above. Service will produce some traces, that it's started:
+Run `ssl_cat` in one of terminals, as it's said above. Service will produce some traces, that it's started:
 
 ```
-    (18.3)bash-3.2$ rebar3 shell --apps scat
+    (18.3)bash-3.2$ rebar3 shell --apps ssl_cat
     ===> Verifying dependencies...
-    ===> Compiling scat
+    ===> Compiling ssl_cat
     Erlang/OTP 18 [erts-7.3] [source] [64-bit] [smp:4:4] [async-threads:0] [hipe] [kernel-poll:false]
     
     Eshell V7.3  (abort with ^G)
@@ -31,11 +31,11 @@ Run `scat` in one of terminals, as it's said above. Service will produce some tr
     eases (http://www.rebar3.org/docs/releases)
     14:15:05.373 [info] Application lager started on node nonode@nohost
     ===> Booted syntax_tools
-    14:15:05.377 [info] Application scat started on node nonode@nohost
+    14:15:05.377 [info] Application ssl_cat started on node nonode@nohost
     ===> Booted compiler
     ===> Booted goldrush
     ===> Booted lager
-    ===> Booted scat
+    ===> Booted ssl_cat
     14:15:05.395 [info] gen tcp is listening on port: 8443
     14:15:05.429 [info] ssl is listening on port 9443
 ```
@@ -48,7 +48,7 @@ Once it's started ask to read and reply back `small.json` file from `priv` direc
     Connection closed by foreign host.
 ```
 
-`scat` produce something similar to this in the log:
+`ssl_cat` produce something similar to this in the log:
 
 ```
     14:17:38.353 [info] tcp connection accepted
@@ -57,7 +57,7 @@ Once it's started ask to read and reply back `small.json` file from `priv` direc
     14:17:38.483 [info] connected to ssl reader
     14:17:43.967 [info] received data from frontend
     14:17:43.968 [info] ssl received: <<"small.json\r\n">>
-    14:17:43.968 [info] reading file: "/Users/gstarinkin/Work/scat/_build/default/lib/scat/priv/small.json"
+    14:17:43.968 [info] reading file: "/Users/gstarinkin/Work/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
     14:17:43.998 [info] file is sent
     14:17:43.998 [info] received data from backed: 16384, total: 16384
     14:17:43.999 [info] received data from backed: 16384, total: 32768
@@ -87,7 +87,7 @@ Ask for `small.json` file once again, you'll see something like that in the outp
     14:23:41.212 [info] connected to ssl reader
     14:23:43.789 [info] received data from frontend
     14:23:43.789 [info] ssl received: <<"small.json\r\n">>
-    14:23:43.789 [info] reading file: "/Users/gstarinkin/Work/scat/_build/default/lib/scat/priv/small.json"
+    14:23:43.789 [info] reading file: "/Users/gstarinkin/Work/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
     14:23:43.796 [info] file is sent
     14:23:43.796 [info] received data from backed: 16384, total: 16384
     ...... skipped ....
@@ -103,8 +103,8 @@ Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (
 
 Issue is reproducable when:
 * Application is run on erlang 19
-* `scat_ssl_reader` uses ssl under the hood (`gen_tcp` works fine)
-* `scat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducabel.
+* `ssl_cat_ssl_reader` uses ssl under the hood (`gen_tcp` works fine)
+* `ssl_cat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducabel.
 
     ```erlang
         proxy_request(FSocket, BSocket) ->
