@@ -97,7 +97,7 @@ Ask for `small.json` file once again, you'll see something like that in the outp
 ```
 
 Notice, that `total` size is smaller, than `small.json` file. You can verify, that `out.json` now has a cat version of `small.json` file.
-
+Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (packet) from socket even though according to tcp trace and erlang trace the whole file was successfully transferred from `9443` to requestor (`scat_listner`).
 
 ## Notes ##
 
