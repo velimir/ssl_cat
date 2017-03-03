@@ -57,7 +57,7 @@ Once it's started ask to read and reply back `small.json` file from `priv` direc
     14:17:38.483 [info] connected to ssl reader
     14:17:43.967 [info] received data from frontend
     14:17:43.968 [info] ssl received: <<"small.json\r\n">>
-    14:17:43.968 [info] reading file: "/Users/gstarinkin/Work/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
+    14:17:43.968 [info] reading file: "< ... >/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
     14:17:43.998 [info] file is sent
     14:17:43.998 [info] received data from backed: 16384, total: 16384
     14:17:43.999 [info] received data from backed: 16384, total: 32768
@@ -70,7 +70,7 @@ Once it's started ask to read and reply back `small.json` file from `priv` direc
 Notice that total bytes sent is equal to the size of small.json file:
 
 ```
--rw-r--r--  1 gstarinkin  staff  1895551 Feb 22 13:57 priv/small.json
+-rw-r--r--  1 user  group  1895551 Feb 22 13:57 priv/small.json
 ```
 
 You can check, that `out.json` (output from telnet) contains the whole content from small.json.
@@ -87,7 +87,7 @@ Ask for `small.json` file once again, you'll see something like that in the outp
     14:23:41.212 [info] connected to ssl reader
     14:23:43.789 [info] received data from frontend
     14:23:43.789 [info] ssl received: <<"small.json\r\n">>
-    14:23:43.789 [info] reading file: "/Users/gstarinkin/Work/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
+    14:23:43.789 [info] reading file: "< ... >/ssl_cat/_build/default/lib/ssl_cat/priv/small.json"
     14:23:43.796 [info] file is sent
     14:23:43.796 [info] received data from backed: 16384, total: 16384
     ...... skipped ....
@@ -97,7 +97,7 @@ Ask for `small.json` file once again, you'll see something like that in the outp
 ```
 
 Notice, that `total` size is smaller, than `small.json` file. You can verify, that `out.json` now has a cut version of `small.json` file.
-Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (packet) from socket even though according to tcp trace and Erlang trace the whole file was successfully transferred from `9443` to requester (`scat_listner`).
+Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (packet) from socket even though according to tcp trace and Erlang trace the whole file was successfully transferred from `9443` to requester (`ssl_cat_listener`).
 
 ## Notes ##
 

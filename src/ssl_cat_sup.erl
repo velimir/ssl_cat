@@ -31,8 +31,8 @@ init([]) ->
     ChildrenSpec = [
                     {ssl_cat_ssl_reader, {ssl_cat_ssl_reader, start_link, []},
                      permanent, 1000, worker, [ssl_cat_ssl_reader_srv]},
-                    {ssl_cat_listner, {ssl_cat_listner, start_link, []},
-                     permanent, 1000, worker, [ssl_cat_listner]}
+                    {ssl_cat_listener, {ssl_cat_listener, start_link, []},
+                     permanent, 1000, worker, [ssl_cat_listener]}
                    ],
     {ok, {{one_for_one, 5, 10}, ChildrenSpec}}.
 

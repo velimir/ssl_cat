@@ -6,7 +6,7 @@
 %%% @end
 %%% Created : 22 Feb 2017 by Grigory Starinkin <gstarinkin@alertlogic.com>
 %%%-------------------------------------------------------------------
--module(ssl_cat_listner).
+-module(ssl_cat_listener).
 
 %% API
 -export([start_link/0, init/0]).
