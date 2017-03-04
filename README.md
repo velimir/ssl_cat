@@ -104,7 +104,7 @@ Issue is `{ssl_closed, Socket}` message is received earlier, than other buffer (
 Issue is reproducible when:
 * Application is run on Erlang 19
 * `ssl_cat_ssl_reader` uses ssl under the hood (`gen_tcp` works fine)
-* `ssl_cat_listner` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducible.
+* `ssl_cat_listener` uses `{active, once}` method in a loop. If `{active, true}` is set issue is not reproducible.
 
     ```erlang
         proxy_request(FSocket, BSocket) ->
